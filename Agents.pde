@@ -11,11 +11,10 @@ public class Agents extends Facade<Agent> {
     
     
     /**
-    * Initiate agents facade and agents' Factory
-    * @param parent  Sketch applet, just put this when calling constructor
+    * Initiate agents facade with provided factory
     */
-    public Agents() {
-        factory = new AgentFactory();
+    public Agents(Factory factory) {
+        super(factory);
     }
 
     
@@ -72,9 +71,12 @@ public class Agents extends Facade<Agent> {
 private class AgentFactory extends Factory {
     
     /**
-    * Create agents from JSON file
+    * Load Agents from a file
+    * @param file    File with agents' definitions
+    * @param roads   Roads where agents will be places
+    * @return a list fo new agents
     */
-    public ArrayList<Agent> loadJSON(File file, Roads roads) {
+    public ArrayList<Agent> load(File file, Roads roads) {
 
         print("Loading agents... ");
         ArrayList<Agent> agents = new ArrayList();

@@ -16,12 +16,13 @@ public class Roads extends Facade<Node> {
     * Initiate roadmap from a GeoJSON file
     * @param file  GeoJSON file containing roads description. Use OpenStreetMap (OSM) format
     */
-    public Roads(String file, int x, int y, PVector[] bounds) {
+    public Roads(Factory factory, String file, int x, int y, PVector[] bounds) {
+        super(factory);
+        
         window = new PVector(x, y);
         this.bounds = bounds;
         
-        factory = new RoadFactory();
-        this.loadJSON(file, this);
+        this.load(file, this);
     }
 
 
@@ -108,7 +109,13 @@ public class Roads extends Facade<Node> {
 
 public class RoadFactory extends Factory {
     
-    public ArrayList<Node> loadJSON(File file, Roads roads) {
+    /**
+    * Load roads from a file
+    * @param file    File with roads definitions
+    * @param roads   Roads where POIs will be places
+    * @return a list fo new POIs
+    */
+    public ArrayList<Node> load(File file, Roads roads) {
         
         print("Loading roads network... ");
         JSONObject roadNetwork = loadJSONObject(file);
@@ -158,7 +165,6 @@ public class RoadFactory extends Factory {
             }
         }
         println("LOADED");
-        
         return new ArrayList();
     }
     

@@ -10,6 +10,11 @@ public abstract class Facade<T extends Placeable> {
     protected ArrayList<T> items = new ArrayList<T>();
 
     
+    public Facade(Factory factory) {
+        this.factory = factory;
+    }
+    
+    
     /**
     * Count the total amount of items
     * @return amount of items in facade
@@ -82,14 +87,14 @@ public abstract class Facade<T extends Placeable> {
 
     
     /**
-    * Create new items from a JSON file, if it exists
-    * @param path  Path to JSON file with items definitions
-    * @param roads  Roadmap where objects will be added
+    * Create new items from a file, if it exists
+    * @param filePath  Path to file with items definitions
+    * @param roads     Roadmap where objects will be added
     */
-    public void loadJSON(String path, Roads roadmap) {
-        File file = new File( dataPath(path) );
-        if( !file.exists() ) println("ERROR! JSON file does not exist");
-        else items.addAll( factory.loadJSON(file, roadmap) );
+    public void load(String filePath, Roads roadmap) {
+        File file = new File( dataPath(filePath) );
+        if( !file.exists() ) println("ERROR! File does not exist");
+        else items.addAll( factory.load(file, roadmap) );
     }
 
     
@@ -151,11 +156,11 @@ public abstract class Factory<T> {
     
     
     /**
-    * Create objects from a JSON file
-    * @param file  JSON file with object definitions
+    * Create objects from a file
+    * @param file  File with object definitions
     * @param roads  Roadmap where objects will be added
     * @return list with new created objects 
     */
-    public abstract ArrayList<T> loadJSON(File file, Roads roads);
+    public abstract ArrayList<T> load(File file, Roads roads);
     
 }

@@ -55,20 +55,20 @@ void setup() {
         canvas = createGraphics(simWidth, simHeight);
     }
     
-    roads = new Roads(roadsPath, simWidth, simHeight, bounds);
+    roads = new Roads(new RoadFactory(), roadsPath, simWidth, simHeight, bounds);
     
-    pois = new POIs();
+    pois = new POIs(new POIFactory());
     pois.add(new Cluster(roads, "encamp", "Encamp", new PVector(910, 120), "canillo", 300));
     pois.add(new Cluster(roads, "canillo", "Canillo", new PVector(950, 50), null, 300));
     pois.add(new Cluster(roads, "lamassana", "La Massana", new PVector(500, 30), "ordino", 300));
     pois.add(new Cluster(roads, "ordino", "Ordino", new PVector(600, 50), null, 300));
     pois.add(new Cluster(roads, "stjulia", "Sant Julià de Lòria", new PVector(100, 820), null, 300));
     //pois.loadJSON("json/pois.geojson", roads);
-    pois.loadCSV("restaurants.csv", roads);
-    pois.loadCSV("parkings.csv", roads);
+    pois.load("restaurants.csv", roads);
+    pois.load("parkings.csv", roads);
     
-    agents = new Agents();
-    agents.loadJSON("json/agents.json", roads);
+    agents = new Agents(new AgentFactory());
+    agents.load("json/agents.json", roads);
     agents.setSpeed(0.1, 5);
     
     heatmap = new Heatmap(0, 0, simWidth, simHeight);

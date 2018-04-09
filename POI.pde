@@ -10,15 +10,8 @@ public class POIs extends Facade<POI> {
     * Initiate pois of interest facade and agents' Factory
     * @param parent  Sketch applet, just put this when calling constructor
     */
-    public POIs() {
-        factory = new POIFactory();
-    }
-    
-    
-    public void loadCSV(String path, Roads roadmap) {
-        File file = new File( dataPath(path) );
-        if( !file.exists() ) println("ERROR! CSV file does not exist");
-        else items.addAll( ((POIFactory)factory).loadCSV(path, roadmap) );
+    public POIs(Factory factory) {
+        super(factory);
     }
     
 }
@@ -34,9 +27,26 @@ public class POIs extends Facade<POI> {
 private class POIFactory extends Factory {
     
     /**
+    * Load POIs from a file
+    * @param file    File with POIs' definitions
+    * @param roads   Roads where POIs will be places
+    * @return a list fo new POIs
+    */
+    public ArrayList<POI> load(File file, Roads roads) {
+        String fileName = file.getName();
+        String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
+        switch(extension) {
+            case "json": return loadJSON(file, roads);
+            case "csv": return loadCSV(fileName, roads);
+        }
+        return new ArrayList();
+    }
+    
+    
+    /**
     * Load POIs form JSON file
     */
-    public ArrayList<POI> loadJSON(File JSONFile, Roads roads) {
+    private ArrayList<POI> loadJSON(File JSONFile, Roads roads) {
         
         print("Loading POIs... ");
         ArrayList<POI> pois = new ArrayList();
@@ -70,7 +80,7 @@ private class POIFactory extends Factory {
     /**
     * Load POIs form CSV file
     */
-    public ArrayList<POI> loadCSV(String path, Roads roads) {
+    private ArrayList<POI> loadCSV(String path, Roads roads) {
         
         print("Loading POIs... ");
         ArrayList<POI> pois = new ArrayList();
