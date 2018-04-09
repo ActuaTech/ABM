@@ -176,7 +176,7 @@ public class RoadFactory extends Factory {
     * null if position doesn't match with any vertex
     */
     private Node getNodeIfVertex(Roads roads, PVector position) {
-        for(Node node : roads.getAll()) {
+        for(Node node : roads) {
             if( position.equals(node.getPosition()) ) return node;
             for(Lane lane : node.outboundLanes()) {
                 if( position.equals(lane.getEnd().getPosition()) ) return lane.getEnd();

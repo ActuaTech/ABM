@@ -94,7 +94,7 @@ public class Heatmap {
     * @param title  Title for new heatmap
     * @param objects  List of (Placeable) objects to generate heatmap
     */
-    public void update(String title, ArrayList objects) {
+    public void update(String title, Facade objects) {
         update(title, objects, "default");
     }
     
@@ -105,7 +105,7 @@ public class Heatmap {
     * @param objects  List of (Placeable) objects to generate heatmap
     * @param gradient  Name identifier of gradient
     */
-    public <T extends Placeable> void update(String title, ArrayList<T> items, String gradient) {
+    public <T extends Placeable> void update(String title, Facade<T> items, String gradient) {
         maxValue = 0;
         this.title = title;
         if(visible) {

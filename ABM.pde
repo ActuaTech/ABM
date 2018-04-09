@@ -129,18 +129,18 @@ void keyPressed() {
             
         case 'a':
             heatmap.visible(Visibility.TOGGLE);
-            heatmap.update("Agents Density", agents.getAll(), "heat");
+            heatmap.update("Agents Density", agents, "heat");
             run = !heatmap.isVisible();
             break;
             
         case 'p':
             heatmap.visible(Visibility.TOGGLE);
-            heatmap.update("Points of interest", pois.getAll(), "cool");
+            heatmap.update("Points of interest", pois, "cool");
             break;
             
         case 'n':
             heatmap.visible(Visibility.TOGGLE);
-            heatmap.update("Nodes Density", roads.getAll(), "cool");
+            heatmap.update("Nodes Density", roads, "cool");
             break;
             
         case 'b':

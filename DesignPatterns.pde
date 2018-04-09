@@ -4,7 +4,7 @@
 * @version       1.0
 * @see           Factory
 */
-public abstract class Facade<T extends Placeable> {
+public abstract class Facade<T extends Placeable> implements Iterable<T> {
     
     protected Factory<T> factory;
     protected ArrayList<T> items = new ArrayList<T>();
@@ -45,15 +45,6 @@ public abstract class Facade<T extends Placeable> {
             if(predicate.evaluate(item)) result.add(item);
         }
         return result;
-    }
-    
-    
-    /**
-    * Get all items
-    * @return list with all items
-    */
-    public ArrayList<T> getAll() {
-        return items;
     }
     
     
@@ -119,6 +110,15 @@ public abstract class Facade<T extends Placeable> {
         textAlign(LEFT, TOP);
         for(String name : counter.keyArray()) txt += name + ": " + counter.get(name) + "\n";
         text(txt, x, y);
+    }
+    
+    
+    /**
+    * Return iterator to loop over items
+    */
+    @Override
+    public Iterator<T> iterator() {
+        return items.iterator();
     }
     
 }

@@ -166,7 +166,7 @@ public class Path {
     private ArrayList<Lane> aStar(Node origin, Node destination) {
         ArrayList<Lane> path = new ArrayList();
         if(!origin.equals(destination)) {
-            for(Node node : ROADMAP.getAll()) node.reset();
+            for(Node node : ROADMAP) node.reset();
             ArrayList<Node> closed = new ArrayList();
             PriorityQueue<Node> open = new PriorityQueue();
             open.add(origin);
