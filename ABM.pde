@@ -2,7 +2,7 @@ PFont myFont;
 
 NodeFacade roads;
 AgentFacade agents;
-POIFacade pois;
+Facade<POI> pois;
 Heatmap heatmap;
 boolean run = false;
 
@@ -57,7 +57,7 @@ void setup() {
     
     roads = new NodeFacade(new NodeFactory(), roadsPath, simWidth, simHeight, bounds);
     
-    pois = new POIFacade(new POIFactory());
+    pois = new Facade(new POIFactory());
     pois.add(new Cluster(roads, "encamp", "Encamp", new PVector(910, 120), "canillo", 300));
     pois.add(new Cluster(roads, "canillo", "Canillo", new PVector(950, 50), null, 300));
     pois.add(new Cluster(roads, "lamassana", "La Massana", new PVector(500, 30), "ordino", 300));

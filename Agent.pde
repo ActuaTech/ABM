@@ -48,8 +48,8 @@ public abstract class Agent implements Placeable {
     */
     public void place(NodeFacade roads) {
         //inNode = roads.getRandom();
-        ArrayList<Node> possible = roads.filter(Filters.isAllowed(this));
-        inNode = possible.get( round(random(0, possible.size()-1)) );
+        Facade<Node> possible = roads.filter(Filters.isAllowed(this));
+        inNode = possible.getRandom();
         pos = inNode.getPosition();
     }
     
@@ -80,9 +80,9 @@ public abstract class Agent implements Placeable {
         path.reset();
         arrived = false;
         POI newDestination = null;
-        ArrayList<POI> possible = pois.filter(Filters.isAllowed(this));
+        Facade<POI> possible = pois.filter(Filters.isAllowed(this));
         while(newDestination == null || inNode.equals(newDestination)) {
-            newDestination = possible.get( round(random(0, possible.size()-1)) );    // Random POI for the moment
+            newDestination = possible.getRandom();    // Random POI for the moment
         }
         return newDestination;
     }

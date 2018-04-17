@@ -4,7 +4,7 @@
 * @version       1.0
 * @see           Factory
 */
-public abstract class Facade<T extends Placeable> implements Iterable<T> {
+public class Facade<T extends Placeable> implements Iterable<T> {
     
     protected Factory<T> factory;
     protected ArrayList<T> items = new ArrayList<T>();
@@ -30,7 +30,7 @@ public abstract class Facade<T extends Placeable> implements Iterable<T> {
     * @return amount of items matching with condition
     */
     public int count(Predicate<T> predicate) {
-        return filter(predicate).size();
+        return filter(predicate).count();
     }
     
     
@@ -39,8 +39,8 @@ public abstract class Facade<T extends Placeable> implements Iterable<T> {
     * @param predicate  Predicate condition
     * @return all items matching with condition
     */
-    public ArrayList<T> filter(Predicate<T> predicate) {
-        ArrayList<T> result = new ArrayList();
+    public Facade<T> filter(Predicate<T> predicate) {
+        Facade<T> result = new Facade(factory);
         for(T item : items) {
             if(predicate.evaluate(item)) result.add(item);
         }
