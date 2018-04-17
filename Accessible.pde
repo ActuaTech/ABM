@@ -1,6 +1,3 @@
-public enum Visibility { HIDE, SHOW, TOGGLE; }
-
-
 public enum Accessible {
     WALK {
         @Override

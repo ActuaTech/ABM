@@ -1,3 +1,5 @@
+public enum Visibility { HIDE, SHOW, TOGGLE; }
+
 /**
 * HEATMAP - Generate a heatmap for a group of Placeable items
 * @author        Marc Vilella

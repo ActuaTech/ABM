@@ -7,11 +7,3 @@ public interface Placeable {
     public boolean select(int mouseX, int mouseY);
     public void draw(PGraphics canvas);
 }
-
-
-/**
-* Interface for predicate filters
-*/
-public interface Predicate<T> {
-    public boolean evaluate(T type);
-}
