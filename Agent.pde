@@ -1,5 +1,5 @@
 /**
-* Agent -  Abstract class describing the minimum ABM unit in simulation. Agent can move thorugh lanes and perform some actions
+* Agent -  Abstract class describing the minimum ABM unit in simulation. Agent can move thorugh edges and perform some actions
 * @author        Marc Vilella
 * @version       2.0
 */
@@ -31,7 +31,7 @@ public abstract class Agent implements Placeable {
     * @param size  Size of the agent
     * @param hexColor  Hexadecimal color of the agent
     */
-    public Agent(int id, Roads roads, int size, String hexColor) {
+    public Agent(int id, NodeFacade roads, int size, String hexColor) {
         ID = id;
         SIZE = size;
         COLOR = unhex( "FF" + hexColor.substring(1) );
@@ -46,7 +46,7 @@ public abstract class Agent implements Placeable {
     * Place agent in roadmap. Random node by default
     * @param roads  Roadmap to place the agent
     */
-    public void place(Roads roads) {
+    public void place(NodeFacade roads) {
         //inNode = roads.getRandom();
         ArrayList<Node> possible = roads.filter(Filters.isAllowed(this));
         inNode = possible.get( round(random(0, possible.size()-1)) );

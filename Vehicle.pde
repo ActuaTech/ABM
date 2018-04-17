@@ -10,7 +10,7 @@ private class Vehicle extends Agent {
     * Initiate agent with default parameters
     * @see Agent
     */
-    public Vehicle(int id, Roads map, int size, String hexColor) {
+    public Vehicle(int id, NodeFacade map, int size, String hexColor) {
         super(id, map, size, hexColor);
         speedFactor = 3;
     }

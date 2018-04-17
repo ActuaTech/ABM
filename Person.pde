@@ -10,7 +10,7 @@ private class Person extends Agent {
     * Initiate agent with default parameters
     * @see Agent
     */
-    public Person(int id, Roads map, int size, String hexColor) {
+    public Person(int id, NodeFacade map, int size, String hexColor) {
         super(id, map, size, hexColor);
     }
     

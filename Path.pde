@@ -3,19 +3,19 @@
 * @author        Marc Vilella
 * @credits       aStar method inspired in Aaron Steed's Pathfinding class http://www.robotacid.com/PBeta/AILibrary/Pathfinder/index.html
 * @version       2.0
-* @see           Node, Lane
+* @see           Node, Edge
 */
 public class Path {
 
-    private final Roads ROADMAP; 
+    private final NodeFacade ROADMAP; 
     private final Agent AGENT;
     
-    private ArrayList<Lane> lanes = new ArrayList();
+    private ArrayList<Edge> edges = new ArrayList();
     private float distance = 0;
     
     // Path movement variables
     private Node inNode = null;
-    private Lane currentLane;
+    private Edge currentEdge;
     private PVector toVertex;
     private boolean arrived = false;
     
@@ -25,7 +25,7 @@ public class Path {
     * @param agent  Agent using the path
     * @param roads  Roadmap used to find possible paths between its nodes
     */
-    public Path(Agent agent, Roads roads) {
+    public Path(Agent agent, NodeFacade roads) {
         ROADMAP = roads;
         AGENT = agent;
     }
@@ -36,7 +36,7 @@ public class Path {
     * @return true if path is computed, false otherwise
     */
     public boolean available() {
-        return lanes.size() > 0;
+        return edges.size() > 0;
     }    
 
 
@@ -46,7 +46,7 @@ public class Path {
     */
     private float calcLength() {
         float distance = 0;
-        for(Lane lane : lanes) distance += lane.getLength();
+        for(Edge edge : edges) distance += edge.getLength();
         return distance;
     }
     
@@ -82,8 +82,8 @@ public class Path {
     * Reset path paramters to initial state
     */
     public void reset() {
-        lanes = new ArrayList();
-        currentLane = null;
+        edges = new ArrayList();
+        currentEdge = null;
         arrived = false;
         distance = 0;
     }
@@ -100,24 +100,24 @@ public class Path {
         PVector movement = dir.copy().normalize().mult(speed);
         if(movement.mag() < dir.mag()) return movement;
         else {
-            if( currentLane.isLastVertex( toVertex ) ) goNextLane();
-            else toVertex = currentLane.nextVertex(toVertex);
+            if( currentEdge.isLastVertex( toVertex ) ) goNextEdge();
+            else toVertex = currentEdge.nextVertex(toVertex);
             return dir;
         }
     }
     
     
     /**
-    * Move agent to next lane in path. Update node binding and handles lane hosting of agent. If there isn't next lane, finishes path.
+    * Move agent to next edge in path. Update node binding and handles edge hosting of agent. If there isn't next edge, finishes path.
     */
-    public void goNextLane() {
-        inNode = currentLane.getEnd();
-        currentLane.removeAgent(AGENT);
-        int i = lanes.indexOf(currentLane) + 1;
-        if( i < lanes.size() ) {
-            currentLane = lanes.get(i);
-            toVertex = currentLane.getVertex(1);
-            currentLane.addAgent(AGENT);
+    public void goNextEdge() {
+        inNode = currentEdge.getEnd();
+        currentEdge.removeAgent(AGENT);
+        int i = edges.indexOf(currentEdge) + 1;
+        if( i < edges.size() ) {
+            currentEdge = edges.get(i);
+            toVertex = currentEdge.getVertex(1);
+            currentEdge.addAgent(AGENT);
         } else arrived = true;
     }
     
@@ -129,8 +129,8 @@ public class Path {
     * @param c    Path color
     */
     public void draw(PGraphics canvas, int stroke, color c) {
-        for(Lane lane : lanes) {
-            lane.draw(canvas, stroke, c);
+        for(Edge edge : edges) {
+            edge.draw(canvas, stroke, c);
         }
     }
     
@@ -143,12 +143,12 @@ public class Path {
     */
     public boolean findPath(Node origin, Node destination) {
         if(origin != null && destination != null) {
-            lanes = aStar(origin, destination);
-            if(lanes.size() > 0) {
+            edges = aStar(origin, destination);
+            if(edges.size() > 0) {
                 distance = calcLength();
                 inNode = origin;
-                currentLane = lanes.get(0);
-                toVertex = currentLane.getVertex(1);
+                currentEdge = edges.get(0);
+                toVertex = currentEdge.getVertex(1);
                 arrived = false;
                 return true;
             }
@@ -161,10 +161,10 @@ public class Path {
     * Perform a A* pathfinding algorithm
     * @param origin  Origin node
     * @param destination  Destination node
-    * @return list of lanes that define the found path from origin to destination
+    * @return list of edges that define the found path from origin to destination
     */
-    private ArrayList<Lane> aStar(Node origin, Node destination) {
-        ArrayList<Lane> path = new ArrayList();
+    private ArrayList<Edge> aStar(Node origin, Node destination) {
+        ArrayList<Edge> path = new ArrayList();
         if(!origin.equals(destination)) {
             for(Node node : ROADMAP) node.reset();
             ArrayList<Node> closed = new ArrayList();
@@ -174,11 +174,11 @@ public class Path {
                 Node currNode = open.poll();
                 closed.add(currNode);
                 if( currNode.equals(destination) ) break;
-                for(Lane lane : currNode.outboundLanes()) {
-                    Node neighbor = lane.getEnd();
-                    if( !lane.isOpen() || closed.contains(neighbor) || !lane.allows(AGENT)) continue;
+                for(Edge edge : currNode.outboundEdges()) {
+                    Node neighbor = edge.getEnd();
+                    if( !edge.isOpen() || closed.contains(neighbor) || !edge.allows(AGENT)) continue;
                     boolean neighborOpen = open.contains(neighbor);
-                    float costToNeighbor = currNode.getG() + lane.getLength();
+                    float costToNeighbor = currNode.getG() + edge.getLength();
                     if( costToNeighbor < neighbor.getG() || !neighborOpen ) {
                         neighbor.setParent(currNode); 
                         neighbor.setG(costToNeighbor);
@@ -196,13 +196,13 @@ public class Path {
     /**
     * Look back all path to a node
     * @param destination  Destination node
-    * @return list of lanes that define a path to destination node
+    * @return list of edges that define a path to destination node
     */
-    private ArrayList<Lane> tracePath(Node destination) {
-        ArrayList<Lane> path = new ArrayList();
+    private ArrayList<Edge> tracePath(Node destination) {
+        ArrayList<Edge> path = new ArrayList();
         Node pathNode = destination;
         while(pathNode.getParent() != null) {
-            path.add( pathNode.getParent().shortestLaneTo(pathNode) );
+            path.add( pathNode.getParent().shortestEdgeTo(pathNode) );
             pathNode = pathNode.getParent();
         }
         Collections.reverse(path);
@@ -211,14 +211,14 @@ public class Path {
     
     
     /**
-    * Return the list of lanes that form the path
+    * Return the list of edges that form the path
     * @return path description
     */
     @Override
     public String toString() {
-        String str = lanes.size() + " LANES: ";
-        for(Lane lane : lanes) {
-            str += lane.toString() + ", ";
+        String str = edges.size() + " LANES: ";
+        for(Edge edge : edges) {
+            str += edge.toString() + ", ";
         }
         return str;
     }

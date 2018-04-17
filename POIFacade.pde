@@ -4,13 +4,13 @@
 * @version       1.0
 * @see           Facade
 */
-public class POIs extends Facade<POI> {
+public class POIFacade extends Facade<POI> {
 
     /**
     * Initiate pois of interest facade and agents' Factory
     * @param parent  Sketch applet, just put this when calling constructor
     */
-    public POIs(Factory factory) {
+    public POIFacade(Factory factory) {
         super(factory);
     }
     

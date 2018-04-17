@@ -1,8 +1,8 @@
 PFont myFont;
 
-Roads roads;
-Agents agents;
-POIs pois;
+NodeFacade roads;
+AgentFacade agents;
+POIFacade pois;
 Heatmap heatmap;
 boolean run = false;
 
@@ -55,9 +55,9 @@ void setup() {
         canvas = createGraphics(simWidth, simHeight);
     }
     
-    roads = new Roads(new RoadFactory(), roadsPath, simWidth, simHeight, bounds);
+    roads = new NodeFacade(new NodeFactory(), roadsPath, simWidth, simHeight, bounds);
     
-    pois = new POIs(new POIFactory());
+    pois = new POIFacade(new POIFactory());
     pois.add(new Cluster(roads, "encamp", "Encamp", new PVector(910, 120), "canillo", 300));
     pois.add(new Cluster(roads, "canillo", "Canillo", new PVector(950, 50), null, 300));
     pois.add(new Cluster(roads, "lamassana", "La Massana", new PVector(500, 30), "ordino", 300));
@@ -67,7 +67,7 @@ void setup() {
     pois.load("restaurants.csv", roads);
     pois.load("parkings.csv", roads);
     
-    agents = new Agents(new AgentFactory());
+    agents = new AgentFacade(new AgentFactory());
     agents.load("json/agents.json", roads);
     agents.setSpeed(0.1, 5);
     

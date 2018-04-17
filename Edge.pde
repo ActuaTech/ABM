@@ -1,11 +1,11 @@
 /**
-* Lane - Lane is the connection bewtween two nodes in roadmap graph, and implements all possibilities for agents to move in them
+* Edge - Edge is the connection bewtween two nodes in roadmap graph, and implements all possibilities for agents to move in them
 * @author        Marc Vilella
 * @credits       Aaron Steed http://www.robotacid.com/PBeta/AILibrary/Pathfinder/index.html
 * @version       2.0
 * @see           Node
 */
-private class Lane {
+private class Edge {
     
     private String name;
     private Accessible access;
@@ -22,13 +22,13 @@ private class Lane {
     
     
     /**
-    * Initiate Lane with name, init and final nodes and inbetween vertices
-    * @param name  Name of the street containing the lane
-    * @param initNode  Node where the lane starts
-    * @param finalNode  Node where the lane ends
-    * @param vertices  List of vertices that give shape to lane
+    * Initiate Edge with name, init and final nodes and inbetween vertices
+    * @param name  Name of the street containing the edge
+    * @param initNode  Node where the edge starts
+    * @param finalNode  Node where the edge ends
+    * @param vertices  List of vertices that give shape to edge
     */
-    public Lane(String name, Accessible access, Node initNode, Node finalNode, ArrayList<PVector> vertices) {
+    public Edge(String name, Accessible access, Node initNode, Node finalNode, ArrayList<PVector> vertices) {
         this.name = name;
         this.access = access;
         this.initNode = initNode;
@@ -43,7 +43,7 @@ private class Lane {
     
     
     /**
-    * Get the end node, where the lane is connected
+    * Get the end node, where the edge is connected
     * @return end node
     */
     public Node getEnd() {
@@ -52,8 +52,8 @@ private class Lane {
     
     
     /**
-    * Get a copy of all vertices that shape the lane
-    * @return list of vertices in lane
+    * Get a copy of all vertices that shape the edge
+    * @return list of vertices in edge
     */
     public ArrayList<PVector> getVertices() {
         return new ArrayList(vertices);
@@ -61,8 +61,8 @@ private class Lane {
     
     
     /**
-    * Get the i vertex in lane
-    * @param i  Position of vertex in lane
+    * Get the i vertex in edge
+    * @param i  Position of vertex in edge
     * @return vertex in position i, null if position does not exist
     */
     public PVector getVertex(int i) {
@@ -72,8 +72,8 @@ private class Lane {
     
     
     /**
-    * Calculate the length of lane
-    * @return length of lane in pixels
+    * Calculate the length of edge
+    * @return length of edge in pixels
     */
     public float calcLength() {
         float dist = 0;
@@ -83,8 +83,8 @@ private class Lane {
     
     
     /**
-    * Get the length of the lane
-    * @return Length of lane in pixels 
+    * Get the length of the edge
+    * @return Length of edge in pixels 
     */
     public float getLength() {
         return distance;
@@ -92,8 +92,8 @@ private class Lane {
     
     
     /**
-    * Check if lane is open
-    * @return true if lane is open, false otherwise
+    * Check if edge is open
+    * @return true if edge is open, false otherwise
     */
     public boolean isOpen() {
         return open;
@@ -106,9 +106,9 @@ private class Lane {
     
     
     /**
-    * Check if lane contains a specific vertex
+    * Check if edge contains a specific vertex
     * @param vertex  Position to compare with existent vertices
-    * @return true if vertex is in lane, false otherwise
+    * @return true if vertex is in edge, false otherwise
     */
     public boolean contains(PVector vertex) {
         return vertices.indexOf(vertex) >= 0;
@@ -116,9 +116,9 @@ private class Lane {
 
     
     /**
-    * Get the following vertex in lane
-    * @param vertex  Vertex in lane
-    * @return  next vertex, or null if vertex is last vertex or doesn't exist in lane
+    * Get the following vertex in edge
+    * @param vertex  Vertex in edge
+    * @return  next vertex, or null if vertex is last vertex or doesn't exist in edge
     */
     public PVector nextVertex(PVector vertex) {
         int i = vertices.indexOf(vertex) + 1;
@@ -128,9 +128,9 @@ private class Lane {
 
     
     /**
-    * Check if vertex is last of lane
+    * Check if vertex is last of edge
     * @param vertex  Vertex to check
-    * @return true if vertex is the last one in lane, false otherwise
+    * @return true if vertex is the last one in edge, false otherwise
     */
     public boolean isLastVertex( PVector vertex ) {
         return vertex.equals( vertices.get( vertices.size() - 1 ) );
@@ -138,33 +138,33 @@ private class Lane {
     
     
     /**
-    * Find contrariwise lane, if exists. Contrariwise is alane that follows the same vertices in opposite direction.
-    * @return contrariwise lane, or null if it doesn't exists
+    * Find contrariwise edge, if exists. Contrariwise is aedge that follows the same vertices in opposite direction.
+    * @return contrariwise edge, or null if it doesn't exists
     */
-    public Lane findContrariwise() {
-        for(Lane otherLane : finalNode.outboundLanes()) {
-            if( otherLane.isContrariwise(this) ) return otherLane;
+    public Edge findContrariwise() {
+        for(Edge otherEdge : finalNode.outboundEdges()) {
+            if( otherEdge.isContrariwise(this) ) return otherEdge;
         }
         return null;
     }
     
     
     /**
-    * Check if lane is contrariwise. Contrariwise is the lane that follows the same vertices in opposite direction.
-    * @param lane  Lane to compare
-    * @return true if both lanes are contrariwise, false otherwise
+    * Check if edge is contrariwise. Contrariwise is the edge that follows the same vertices in opposite direction.
+    * @param edge  Edge to compare
+    * @return true if both edges are contrariwise, false otherwise
     */
-    public boolean isContrariwise(Lane lane) {
-        ArrayList<PVector> reversedVertices = new ArrayList(lane.getVertices());
+    public boolean isContrariwise(Edge edge) {
+        ArrayList<PVector> reversedVertices = new ArrayList(edge.getVertices());
         Collections.reverse(reversedVertices);
         return vertices.equals(reversedVertices);
     }
     
     
     /**
-    * Find point in lane closest to specified position
+    * Find point in edge closest to specified position
     * @param position  Position to find closest point
-    * @return closest point position in lane 
+    * @return closest point position in edge 
     */
     public PVector findClosestPoint(PVector position) {
         Float minDistance = Float.NaN;
@@ -182,10 +182,10 @@ private class Lane {
     
     
     /**
-    * Divide a lane by a new Node if it matches with any lane's vertex position. Connect to the node, and create
-    * a new lane from new node to actual final node.
-    * @param node  New node to divide lane by
-    * @return true if lane was succesfully divided, false otherwise
+    * Divide a edge by a new Node if it matches with any edge's vertex position. Connect to the node, and create
+    * a new edge from new node to actual final node.
+    * @param node  New node to divide edge by
+    * @return true if edge was succesfully divided, false otherwise
     */
     protected boolean divide(Node node) {
         int i = vertices.indexOf(node.getPosition());
@@ -202,10 +202,10 @@ private class Lane {
     
     
     /**
-    * Split a lane by a new Node if its position is in lane. Connect to the node, and create
-    * a new lane from new node to actual final node.
-    * @param node New node to split lane by
-    * @return true if lane was succesfully splited, false otherwise
+    * Split a edge by a new Node if its position is in edge. Connect to the node, and create
+    * a new edge from new node to actual final node.
+    * @param node New node to split edge by
+    * @return true if edge was succesfully splited, false otherwise
     */
     protected Node split(Node node) {
         if( node.getPosition().equals(vertices.get(0)) ) return initNode;
@@ -230,13 +230,13 @@ private class Lane {
     
     
     /**
-    * Draw lane, applying color settings depending on data to show
-    * @param canvas  Canvas to draw lane
-    * @param stroke  Lane width in pixels
-    * @param c  Lane color
+    * Draw edge, applying color settings depending on data to show
+    * @param canvas  Canvas to draw edge
+    * @param stroke  Edge width in pixels
+    * @param c  Edge color
     */
     public void draw(PGraphics canvas, int stroke, color c) {
-        color occupColor = lerpColor(c, #FF0000, occupancy);    // Lane occupancy color interpolation
+        color occupColor = lerpColor(c, #FF0000, occupancy);    // Edge occupancy color interpolation
         canvas.stroke(occupColor, 127); canvas.strokeWeight(stroke);
         for(int i = 1; i < vertices.size(); i++) {
             PVector prevVertex = vertices.get(i-1);
@@ -247,8 +247,8 @@ private class Lane {
     
     
     /**
-    * Add reference to an agent that is crossing in the lane. Recalculate occupancy
-    * @param agent  The agent crossing the lane
+    * Add reference to an agent that is crossing in the edge. Recalculate occupancy
+    * @param agent  The agent crossing the edge
     */
     public void addAgent(Agent agent) {
         crowd.add(agent);
@@ -257,8 +257,8 @@ private class Lane {
     
     
     /**
-    * Remove reference to agent that was crossing in the lane, but it's not anymore. Recalculate occupancy
-    * @param agent  The agent that was crossing the lane
+    * Remove reference to agent that was crossing in the edge, but it's not anymore. Recalculate occupancy
+    * @param agent  The agent that was crossing the edge
     */
     public void removeAgent(Agent agent) {
         crowd.remove(agent);
@@ -267,8 +267,8 @@ private class Lane {
     
     
     /**
-    * Return lane description (NAME and VERTICES count)
-    * @return lane description
+    * Return edge description (NAME and VERTICES count)
+    * @return edge description
     */
     @Override
     public String toString() {

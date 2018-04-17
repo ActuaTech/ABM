@@ -4,7 +4,7 @@
 * @version       1.0
 * @see           Facade
 */
-public class Agents extends Facade<Agent> {
+public class AgentFacade extends Facade<Agent> {
     
     private float speed;
     private float maxSpeed = 5; 
@@ -13,7 +13,7 @@ public class Agents extends Facade<Agent> {
     /**
     * Initiate agents facade with provided factory
     */
-    public Agents(Factory factory) {
+    public AgentFacade(Factory factory) {
         super(factory);
     }
 

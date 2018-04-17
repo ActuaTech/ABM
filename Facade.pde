@@ -82,7 +82,7 @@ public abstract class Facade<T extends Placeable> implements Iterable<T> {
     * @param filePath  Path to file with items definitions
     * @param roads     Roadmap where objects will be added
     */
-    public void load(String filePath, Roads roadmap) {
+    public void load(String filePath, NodeFacade roadmap) {
         File file = new File( dataPath(filePath) );
         if( !file.exists() ) println("ERROR! File does not exist");
         else items.addAll( factory.load(file, roadmap) );

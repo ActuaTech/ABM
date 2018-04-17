@@ -9,10 +9,10 @@ private class AgentFactory extends Factory {
     /**
     * Load Agents from a file
     * @param file    File with agents' definitions
-    * @param roads   Roads where agents will be places
+    * @param roads   NodeFacade where agents will be places
     * @return a list fo new agents
     */
-    public ArrayList<Agent> load(File file, Roads roads) {
+    public ArrayList<Agent> load(File file, NodeFacade roads) {
 
         print("Loading agents... ");
         ArrayList<Agent> agents = new ArrayList();

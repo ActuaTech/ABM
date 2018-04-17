@@ -17,7 +17,7 @@ public class Cluster extends POI {
     * @param direction Next cluster to connect (if any)   
     * @param capacity  Customers capacity of the Cluster
     */
-    public Cluster(Roads roads, String id, String name, PVector position, String direction, int capacity) {
+    public Cluster(NodeFacade roads, String id, String name, PVector position, String direction, int capacity) {
         super(roads, id, name, "cluster", position, capacity);
         setDirection(direction);
     }
@@ -28,7 +28,7 @@ public class Cluster extends POI {
     * @param roads    Roadmap to place the POI
     */
     @Override
-    public void place(Roads roads) {
+    public void place(NodeFacade roads) {
         for(Node node : roads) {
             if(node.getDirection() != null && ID.equals(node.getDirection())) {
                 node.connectBoth(this, null, "Connection to " + NAME, Accessible.ALL);
@@ -42,8 +42,8 @@ public class Cluster extends POI {
     /**
     * Draw CLuster in screen
     * @param canvas  Canvas to draw node
-    * @param stroke  Lane width in pixels
-    * @param c  Lanes color
+    * @param stroke  Edge width in pixels
+    * @param c  Edges color
     */
     @Override
     public void draw(PGraphics canvas, int stroke, color c) {
@@ -51,8 +51,8 @@ public class Cluster extends POI {
         canvas.ellipse(POSITION.x, POSITION.y, 75, 75);
         canvas.textAlign(CENTER, TOP); canvas.textSize(9); canvas.fill(c);
         canvas.text(NAME, POSITION.x, POSITION.y);
-        for(Lane lane : lanes) {
-            lane.draw(canvas, stroke, c);
+        for(Edge edge : edges) {
+            edge.draw(canvas, stroke, c);
         }
     }
     

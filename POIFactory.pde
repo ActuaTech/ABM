@@ -9,10 +9,10 @@ private class POIFactory extends Factory {
     /**
     * Load POIs from a file
     * @param file    File with POIs' definitions
-    * @param roads   Roads where POIs will be places
+    * @param roads   NodeFacade where POIs will be places
     * @return a list fo new POIs
     */
-    public ArrayList<POI> load(File file, Roads roads) {
+    public ArrayList<POI> load(File file, NodeFacade roads) {
         String fileName = file.getName();
         String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
         switch(extension) {
@@ -26,7 +26,7 @@ private class POIFactory extends Factory {
     /**
     * Load POIs form JSON file
     */
-    private ArrayList<POI> loadJSON(File JSONFile, Roads roads) {
+    private ArrayList<POI> loadJSON(File JSONFile, NodeFacade roads) {
         
         print("Loading POIs... ");
         ArrayList<POI> pois = new ArrayList();
@@ -60,7 +60,7 @@ private class POIFactory extends Factory {
     /**
     * Load POIs form CSV file
     */
-    private ArrayList<POI> loadCSV(String path, Roads roads) {
+    private ArrayList<POI> loadCSV(String path, NodeFacade roads) {
         
         print("Loading POIs... ");
         ArrayList<POI> pois = new ArrayList();

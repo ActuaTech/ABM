@@ -33,6 +33,6 @@ public abstract class Factory<T> {
     * @param roads  Roadmap where objects will be added
     * @return list with new created objects 
     */
-    public abstract ArrayList<T> load(File file, Roads roads);
+    public abstract ArrayList<T> load(File file, NodeFacade roads);
     
 }

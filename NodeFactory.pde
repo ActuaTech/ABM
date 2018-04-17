@@ -1,26 +1,26 @@
-public class RoadFactory extends Factory {
+public class NodeFactory extends Factory {
     
     /**
     * Load roads from a file
     * @param file    File with roads definitions
-    * @param roads   Roads where POIs will be places
+    * @param roads   NodeFacade where POIs will be places
     * @return a list fo new POIs
     */
-    public ArrayList<Node> load(File file, Roads roads) {
+    public ArrayList<Node> load(File file, NodeFacade roads) {
         
         print("Loading roads network... ");
         JSONObject roadNetwork = loadJSONObject(file);
-        JSONArray lanes = roadNetwork.getJSONArray("features");
-        for(int i = 0; i < lanes.size(); i++) {
-            JSONObject lane = lanes.getJSONObject(i);
+        JSONArray edges = roadNetwork.getJSONArray("features");
+        for(int i = 0; i < edges.size(); i++) {
+            JSONObject edge = edges.getJSONObject(i);
             
-            JSONObject props = lane.getJSONObject("properties");
+            JSONObject props = edge.getJSONObject("properties");
             Accessible access = props.isNull("type") ? Accessible.ALL : Accessible.create( props.getString("type") );
             String name = props.isNull("name") ? "null" : props.getString("name");
             boolean oneWay = props.isNull("oneway") ? false : props.getInt("oneway") == 1 ? true : false;
             String direction = props.isNull("direction") ? null : props.getString("direction");
       
-            JSONArray points = lane.getJSONObject("geometry").getJSONArray("coordinates");
+            JSONArray points = edge.getJSONObject("geometry").getJSONArray("coordinates");
             
             Node prevNode = null;
             ArrayList vertices = new ArrayList();
@@ -66,16 +66,16 @@ public class RoadFactory extends Factory {
     * @return a new created (not placed) node if position matches with a vertex, an already existing node if position matches with it, or
     * null if position doesn't match with any vertex
     */
-    private Node getNodeIfVertex(Roads roads, PVector position) {
+    private Node getNodeIfVertex(NodeFacade roads, PVector position) {
         for(Node node : roads) {
             if( position.equals(node.getPosition()) ) return node;
-            for(Lane lane : node.outboundLanes()) {
-                if( position.equals(lane.getEnd().getPosition()) ) return lane.getEnd();
-                else if( lane.contains(position) ) {
-                    Lane laneBack = lane.findContrariwise();
+            for(Edge edge : node.outboundEdges()) {
+                if( position.equals(edge.getEnd().getPosition()) ) return edge.getEnd();
+                else if( edge.contains(position) ) {
+                    Edge edgeBack = edge.findContrariwise();
                     Node newNode = new Node(position);
-                    if(lane.divide(newNode)) {
-                        if(laneBack != null) laneBack.divide(newNode);
+                    if(edge.divide(newNode)) {
+                        if(edgeBack != null) edgeBack.divide(newNode);
                         newNode.place(roads);
                         return newNode;
                     }

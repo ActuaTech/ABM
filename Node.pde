@@ -3,13 +3,13 @@
 * @author        Marc Vilella
 * @credits       Aaron Steed http://www.robotacid.com/PBeta/AILibrary/Pathfinder/index.html
 * @version       2.0
-* @see           Lane
+* @see           Edge
 */
 private class Node implements Placeable, Comparable<Node> {
 
     protected int id;
     protected final PVector POSITION;
-    protected ArrayList<Lane> lanes = new ArrayList();
+    protected ArrayList<Edge> edges = new ArrayList();
     protected boolean selected;
     private String direction = null;
     
@@ -51,7 +51,7 @@ private class Node implements Placeable, Comparable<Node> {
     * Save node into roadmap.
     * @param roads  Roadmap to add node
     */
-    public void place(Roads roads) {
+    public void place(NodeFacade roads) {
         roads.add(this);
     }
     
@@ -66,50 +66,50 @@ private class Node implements Placeable, Comparable<Node> {
     
     
     /**
-    * Get all outbound lanes from the node
-    * @return outbound lanes
+    * Get all outbound edges from the node
+    * @return outbound edges
     */
-    public ArrayList<Lane> outboundLanes() {
-        return lanes;
+    public ArrayList<Edge> outboundEdges() {
+        return edges;
     }
     
     
     /**
-    * Get shortest lane that goes to a specified node, if exists
+    * Get shortest edge that goes to a specified node, if exists
     * @param node  Destination node
-    * @return shortest lane to destination node, null if no lane goes to node
+    * @return shortest edge to destination node, null if no edge goes to node
     */
-    public Lane shortestLaneTo(Node node) {
-        Float shortestLaneLength = Float.NaN;
-        Lane shortestLane = null;
-        for(Lane lane : lanes) {
-            if(node.equals(lane.getEnd())) {
-                if(shortestLaneLength.isNaN() || lane.getLength() < shortestLaneLength) {
-                    shortestLaneLength = lane.getLength();
-                    shortestLane = lane;
+    public Edge shortestEdgeTo(Node node) {
+        Float shortestEdgeLength = Float.NaN;
+        Edge shortestEdge = null;
+        for(Edge edge : edges) {
+            if(node.equals(edge.getEnd())) {
+                if(shortestEdgeLength.isNaN() || edge.getLength() < shortestEdgeLength) {
+                    shortestEdgeLength = edge.getLength();
+                    shortestEdge = edge;
                 }
             }
         }
-        return shortestLane;
+        return shortestEdge;
     }
     
     
     /**
-    * Create a lane that connects node with another node
+    * Create a edge that connects node with another node
     * @param node  Node to connect
-    * @param vertices  List of vertices that shape the lane
-    * @param name  Name of the lane
+    * @param vertices  List of vertices that shape the edge
+    * @param name  Name of the edge
     */
     protected void connect(Node node, ArrayList<PVector> vertices, String name, Accessible access) {
-        lanes.add( new Lane(name, access, this, node, vertices) );
+        edges.add( new Edge(name, access, this, node, vertices) );
     }
     
     
     /**
-    * Create a bidirectional connection (two lanes) between node and another node
+    * Create a bidirectional connection (two edges) between node and another node
     * @param node  Node to connect
-    * @param vertices  List of vertices that shape the lanes
-    * @param name  Name of the lanes
+    * @param vertices  List of vertices that shape the edges
+    * @param name  Name of the edges
     */
     protected void connectBoth(Node node, ArrayList<PVector> vertices, String name, Accessible access) {
         connect(node, vertices, name, access);
@@ -137,15 +137,15 @@ private class Node implements Placeable, Comparable<Node> {
     
     
     public boolean allows(Agent agent) {
-        for(Lane lane : lanes) {
-            if(lane.allows(agent)) return true;
+        for(Edge edge : edges) {
+            if(edge.allows(agent)) return true;
         }
         return false;
     }
 
 
     /**
-    * Draw the node and outbound lanes with default colors
+    * Draw the node and outbound edges with default colors
     * @param canvas  Canvas to draw node
     */
     public void draw(PGraphics canvas) {
@@ -156,14 +156,14 @@ private class Node implements Placeable, Comparable<Node> {
     
     
     /**
-    * Draw outbound lanes with specified colors
+    * Draw outbound edges with specified colors
     * @param canvas  Canvas to draw node
-    * @param stroke  Lane width in pixels
-    * @param c  Lanes color
+    * @param stroke  Edge width in pixels
+    * @param c  Edges color
     */
     public void draw(PGraphics canvas, int stroke, color c) {
-        for(Lane lane : lanes) {
-            lane.draw(canvas, stroke, c);
+        for(Edge edge : edges) {
+            edge.draw(canvas, stroke, c);
         }
     }
     
@@ -221,7 +221,7 @@ private class Node implements Placeable, Comparable<Node> {
     */
     @Override
     public String toString() {
-        return id + ": " + POSITION + " [" + lanes.size() + "]"; 
+        return id + ": " + POSITION + " [" + edges.size() + "]"; 
     }
     
     

@@ -24,7 +24,7 @@ public class POI extends Node {
     * @param name       Name of the POI
     * @param capacity   Customers capacity of the POI
     */
-    public POI(Roads roads, String id, String name, String type, PVector position, int capacity) {
+    public POI(NodeFacade roads, String id, String name, String type, PVector position, int capacity) {
         super(position);
         ID = id;
         NAME = name;
@@ -40,7 +40,7 @@ public class POI extends Node {
     * @param roads    Roadmap to place the POI
     */
     @Override
-    public void place(Roads roads) {
+    public void place(NodeFacade roads) {
         roads.connect(this);
     }
     
@@ -97,8 +97,8 @@ public class POI extends Node {
     /**
     * Draw POI in screen, with different effects depending on its status
     * @param canvas  Canvas to draw node
-    * @param stroke  Lane width in pixels
-    * @param c  Lanes color
+    * @param stroke  Edge width in pixels
+    * @param c  Edges color
     */
     @Override
     public void draw(PGraphics canvas, int stroke, color c) {
