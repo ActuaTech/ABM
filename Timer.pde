@@ -9,7 +9,6 @@ class Timer{
     private int lastLoopTime;
     private float speedFactor;
     private float speed;
-    private float limitSpeed;
   
     private DateTime initTime;
     private DateTime endTime;
@@ -101,7 +100,7 @@ class Timer{
     *@param increment  Speed increment (positive) or decrement (negative)
     */
     public void changeSpeedFactor(float increment) {
-        speedFactor = constrain(speedFactor + increment, 0, limitSpeed);
+        speedFactor = constrain(speedFactor + increment, 0, MAX_FLOAT);
     }
     
     
